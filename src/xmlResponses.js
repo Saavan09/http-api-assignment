@@ -18,7 +18,7 @@ const getBadRequestXML = (request, response) => {
     status = 400;
     responseXML = `
       <response>
-        <message>Sorry, this request does not have valid parameters</message>
+        <message>Missing valid query parameter set to true</message>
         <id>BadRequest</id>
       </response>
     `;
@@ -43,7 +43,7 @@ const getUnauthorizedXML = (request, response) => {
     status = 401;
     responseXML = `
       <response>
-        <message>You are not logged in</message>
+        <message>Missing loggedIn query parameter set to yes</message>
         <id>Unauthorized</id>
       </response>
     `;
@@ -75,7 +75,7 @@ const getForbiddenXML = (request, response) => {
 const getInternalXML = (request, response) => {
   const responseXML = `
     <response>
-      <message>Internal server error occured</message>
+      <message>Internal server error. Something went wrong.</message>
       <id>Internal</id>
     </response>
   `;
@@ -87,7 +87,7 @@ const getInternalXML = (request, response) => {
 const getNotImplementedXML = (request, response) => {
   const responseXML = `
     <response>
-      <message>This feature has not been implemented yet</message>
+      <message>A get request for this page has not been implemented yet. Check again later for updated content.</message>
       <id>NotImplemented</id>
     </response>
   `;

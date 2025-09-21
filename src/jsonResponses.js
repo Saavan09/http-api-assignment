@@ -18,7 +18,7 @@ const getBadRequestJSON = (request, response) => {
   if (!request.query || request.query.valid !== 'true') {
     status = 400;
     responseJSON = {
-      message: 'Sorry, this request does not have valid parameters',
+      message: 'Missing valid query parameter set to true',
       id: 'BadRequest',
     };
   } else {
@@ -41,7 +41,7 @@ const getUnauthorizedJSON = (request, response) => {
   if (!request.query || request.query.loggedIn !== 'yes') {
     status = 401;
     responseJSON = {
-      message: 'You are not logged in',
+      message: 'Missing loggedIn query parameter set to yes',
       id: 'Unauthorized',
     };
   } else {
@@ -72,7 +72,7 @@ const getForbiddenJSON = (request, response) => {
 
 const getInternalJSON = (request, response) => {
   const responseJSON = {
-    message: 'Internal server error occured',
+    message: 'Internal server error. Something went wrong.',
     id: 'Internal',
   };
 
@@ -85,7 +85,7 @@ const getInternalJSON = (request, response) => {
 
 const getNotImplementedJSON = (request, response) => {
   const responseJSON = {
-    message: 'This feature has not been implemented yet',
+    message: 'A get request for this page has not been implemented yet. Check again later for updated content.',
     id: 'NotImplemented',
   };
 

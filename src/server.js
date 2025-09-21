@@ -1,6 +1,7 @@
 const http = require('http');
 const url = require('url');
 const fs = require('fs');
+const path = require('path');
 
 const jsonResponses = require('./jsonResponses');
 const xmlResponses = require('./xmlResponses');
@@ -8,12 +9,13 @@ const xmlResponses = require('./xmlResponses');
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const respond = (req, res, jsonFunc, xmlFunc) => {
-    const accept = req.headers.accept || 'application/json';
-    if (accept.includes('xml')) {
-        xmlFunc(req, res);
-    } else {
-        jsonFunc(req, res);
-    }
+  const accept = req.headers.accept || 'application/json'; //default JSON
+
+  if (accept.toLowerCase().includes('xml')) {
+    xmlFunc(req, res);
+  } else {
+    jsonFunc(req, res);
+  }
 };
 
 const onRequest = (req, res) => {
@@ -23,9 +25,25 @@ const onRequest = (req, res) => {
     const pathname = parsedUrl.pathname;
     const query = parsedUrl.query;
 
+    //base js
+    if (pathname === '/index.js') {
+        fs.readFile(path.join(__dirname, 'index.js'), (err, data) => {
+            if (err) {
+                res.writeHead(500, { 'Content-Type': 'text/plain' });
+                res.write('Internal Server Error');
+                res.end();
+            } else {
+                res.writeHead(200, { 'Content-Type': 'application/javascript' });
+                res.write(data);
+                res.end();
+            }
+        });
+        return;
+    }
+
     //html
     if (pathname === '/' || pathname === '/client.html') {
-        fs.readFile('../client/client.html', (err, data) => {
+        fs.readFile(path.join(__dirname, '../client/client.html'), (err, data) => {
             if (err) {
                 res.writeHead(500, { 'Content-Type': 'text/plain' });
                 res.write('Internal Server Error');
@@ -42,7 +60,7 @@ const onRequest = (req, res) => {
 
     //css
     if (pathname === '/style.css') {
-        fs.readFile('./style.css', (err, data) => {
+        fs.readFile(path.join(__dirname, '../client/style.css'), (err, data) => {
             if (err) {
                 res.writeHead(500, { 'Content-Type': 'text/plain' });
                 res.write('Internal Server Error');
